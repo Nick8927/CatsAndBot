@@ -12,3 +12,5 @@ pycache/
 # ▶️ Md and CSV
 *.md
 !README.md
+
+/media
