@@ -1,30 +1,30 @@
 import os
 from dotenv import load_dotenv
-from telegram.ext import Application, CommandHandler, MessageHandler
+import telebot
 
 from handlers.start import start
 from handlers.actions import handle_action
 from handlers.history import show_history
 
-
 load_dotenv()
 BOT_TOKEN = os.getenv("TOKEN")
 
+bot = telebot.TeleBot(BOT_TOKEN)
 
-def main():
-    """функция запуска бота"""
-    # updater = Updater(BOT_TOKEN, use_context=True)
-    # dp = updater.dispatcher
 
-    app = Application.builder().token(BOT_TOKEN).build()
+@bot.message_handler(commands=['start'])
+def handle_start(message):
+    start(bot, message)
 
-    app.add_handler(CommandHandler("start", start))
-    # dp.add_handler(MessageHandler(Filters.text("История выбора 📜"), show_history))
-    # dp.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_action))
+@bot.message_handler(func=lambda msg: msg.text == "История выбора 📜")
+def handle_history(message):
+    show_history(bot, message)
 
-    app.run_polling()
-
+@bot.message_handler(func=lambda msg: True)
+def handle_any_message(message):
+    handle_action(bot, message)
 
 
 if __name__ == "__main__":
-    main()
+    print("наш бот запущен... ")
+    bot.infinity_polling()
