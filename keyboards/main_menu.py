@@ -1,10 +1,5 @@
-from telegram import ReplyKeyboardMarkup
+from telebot import types
 
-
-main_menu = ReplyKeyboardMarkup(
-    [
-        ["Погладить кота 🐱", "Обнять кота 🤗"],
-        ["История выбора 📜"]
-    ],
-    resize_keyboard=True
-)
+main_menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
+main_menu.row("Погладить кота 🐱", "Обнять кота 🤗")
+main_menu.add("История выбора 📜")
